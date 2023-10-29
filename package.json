@@ -1,18 +1,22 @@
 {
   "name": "debugger-for-chrome",
   "displayName": "[Deprecated] Debugger for Chrome",
-  "version": "4.13.0",
+  "version": "0.0.1",
   "icon": "images/icon.png",
   "description": "%extension.description%",
   "author": {
-    "name": "Microsoft Corporation"
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-chrome-debug"
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
   },
   "publisher": "msjsdiag",
-  "bugs": "https://github.com/microsoft/vscode-chrome-debug/issues",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
   "extensionKind": [
     "ui"
   ],
@@ -26,7 +30,7 @@
   "keywords": [
     "multi-root ready"
   ],
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "MIT",
   "dependencies": {
     "vscode-chrome-debug-core": "6.8.11",
     "vscode-debugadapter": "1.40.0",
@@ -74,7 +78,8 @@
     "vscode-chrome-debug-core-testsupport": "4.1.1",
     "vscode-debugadapter-testsupport": "1.33.0",
     "vscode-debugprotocol": "1.37.0",
-    "vscode-nls-dev": "4.0.4"
+    "vscode-nls-dev": "4.0.4",
+    "typescript-esbuild": "0.3.1"
   },
   "main": "./out/src/extension",
   "activationEvents": [
@@ -96,7 +101,8 @@
     "patch": "npm version patch -m '%s'",
     "minor": "npm version minor -m '%s'",
     "major": "npm version major -m '%s'",
-    "package": "gulp package"
+    "package": "gulp package",
+    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts"
   },
   "contributes": {
     "breakpoints": [
@@ -453,5 +459,11 @@
         "title": "%chrome.toggleSmartStep.title%"
       }
     ]
+  },
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "type": "module",
+  "private": "false",
+  "publishConfig": {
+    "access": "public"
   }
 }

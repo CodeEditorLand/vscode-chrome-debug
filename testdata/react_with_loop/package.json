@@ -1,7 +1,7 @@
 {
   "name": "my-app",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": "false",
   "dependencies": {
     "@babel/core": "7.23.2",
     "@svgr/webpack": "8.1.0",
@@ -55,10 +55,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "test": "node scripts/test.js",
+    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts"
   },
   "browserslist": [
     ">0.2%",
@@ -118,6 +116,25 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "4.0.0",
-    "copy-webpack-plugin": "11.0.0"
+    "copy-webpack-plugin": "11.0.0",
+    "typescript-esbuild": "0.3.1"
+  },
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
   }
 }
