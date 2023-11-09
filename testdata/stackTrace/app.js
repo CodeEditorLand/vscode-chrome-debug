@@ -1,13 +1,13 @@
 function buttonClick() {
-	setTimeout(timeoutCallback, 100);
+    setTimeout(timeoutCallback, 100);
 }
 
 function timeoutCallback() {
-	eval("evalCallback();");
+    eval("evalCallback();");
 }
 
 function evalCallback() {
-	(function () {
-		console.log("Test stack trace here");
-	})();
+    (function() {
+        console.log('Test stack trace here');
+    })();
 }

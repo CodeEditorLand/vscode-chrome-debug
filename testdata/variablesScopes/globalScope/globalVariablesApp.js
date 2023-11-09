@@ -1,8 +1,8 @@
-console.log("TestCode: START");
+console.log('TestCode: START');
 
 debugger; // Pause here to get a list of all the "existing" global variables, so we know to ignore those
 
-console.log("TestCode: BEFORE-ADDING-VARIABLES");
+console.log('TestCode: BEFORE-ADDING-VARIABLES');
 
 // Try to create a variable of each important type, to verify that we can see their contents properly
 
@@ -74,8 +74,8 @@ myVar["self"] = myVar;
 myVar.obj["toMyVar"] = myVar;
 `);
 
-console.log("TestCode: BEFORE-VERIFYING-VARIABLES");
+console.log('TestCode: BEFORE-VERIFYING-VARIABLES');
 
 debugger; // Pause here to verify that we can see the values and types of all the variables
 
-console.log("TestCode: END");
+console.log('TestCode: END');

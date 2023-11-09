@@ -1,2 +1,1 @@
-Integration tests. This folder contains tests that run (mostly) end-to-end tests
-with the debug adapter against an actual instance of Chrome.
+Integration tests. This folder contains tests that run (mostly) end-to-end tests with the debug adapter against an actual instance of Chrome.
