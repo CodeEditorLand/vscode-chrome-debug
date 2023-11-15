@@ -1,36 +1,36 @@
-import React, { Component } from "react";
+
+import React, { Component } from 'react';
 
 export class Counter extends Component {
-	constructor(props) {
-		super(props);
 
-		this.state = {
-			count: 0,
-		};
-	}
+  constructor(props) {
+    super(props);
 
-	increment() {
-		console.log("blub"); // bpLabel: react_Counter_increment
-		const newval = this.state.count + 1;
-		this.setState({ count: newval });
-		this.stepIn(); //bpLabel: react_Counter_stepInStop
-	}
+    this.state = {
+      count: 0
+    };
+  }
 
-	stepIn() {
-		console.log("stepped in"); //bpLabel: react_Counter_stepIn;
-	}
+    increment() {
+      console.log('blub'); // bpLabel: react_Counter_increment
+      const newval = this.state.count + 1 ;
+      this.setState({ count: newval });
+      this.stepIn(); //bpLabel: react_Counter_stepInStop
+    }
 
-	render() {
-		return (
-			<div className="shopping-list">
-				Click count = {this.state.count};
-				<div>
-					<button id="incrementBtn" onClick={() => this.increment()}>
-						Increment
-					</button>{" "}
-					{/* bpLabel: react_Counter_stepOut */}
-				</div>
-			</div>
-		);
-	}
-}
+    stepIn() {
+      console.log('stepped in'); //bpLabel: react_Counter_stepIn;
+    }
+
+    render() {
+      return (
+        <div className="shopping-list">
+          Click count = {this.state.count};
+          <div>
+            <button id="incrementBtn" onClick={ () => this.increment() } >Increment</button> { /* bpLabel: react_Counter_stepOut */ }
+          </div>
+        </div>
+      );
+    }
+  }
+
