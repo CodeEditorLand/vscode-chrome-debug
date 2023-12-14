@@ -432,7 +432,7 @@
     "mocha-junit-reporter": "2.2.1",
     "mocha-multi-reporters": "1.5.1",
     "mockery": "2.1.0",
-    "puppeteer": "21.6.0",
+    "puppeteer": "21.6.1",
     "request-promise-native": "1.0.7",
     "source-map-support": "0.5.21",
     "tmp": "0.2.1",
