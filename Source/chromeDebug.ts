@@ -32,7 +32,7 @@ ChromeDebugSession.run(
 		chromeConnection: ChromeProvidedPortConnection,
 		pathTransformer: UrlPathTransformer,
 		sourceMapTransformer: BaseSourceMapTransformer,
-	})
+	}),
 );
 
 /* tslint:disable:no-var-requires */

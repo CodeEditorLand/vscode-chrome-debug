@@ -13,7 +13,7 @@ const localize = nls.loadMessageBundle();
  */
 export function getNotExistErrorResponse(
 	attribute: string,
-	path: string
+	path: string,
 ): Promise<void> {
 	return Promise.reject(
 		new ErrorWithMessage(<DebugProtocol.Message>{
@@ -22,10 +22,10 @@ export function getNotExistErrorResponse(
 				"attribute.path.not.exist",
 				"Attribute '{0}' does not exist ('{1}').",
 				attribute,
-				"{path}"
+				"{path}",
 			),
 			variables: { path },
-		})
+		}),
 	);
 }
 
@@ -35,10 +35,10 @@ export function chromeProvidedPortWithoutUserDataDir() {
 			id: 2008,
 			format: localize(
 				"random.port.no.userdatadir",
-				'When the remote debugging port is set to 0, you must also provide the "userDataDir" launch argument'
+				'When the remote debugging port is set to 0, you must also provide the "userDataDir" launch argument',
 			),
 			sendTelemetry: true,
-		})
+		}),
 	);
 }
 
@@ -50,10 +50,10 @@ export function couldNotConnectToPort(address: string, port: number) {
 				"launch.port.not.open",
 				"Could not open a connection to Chrome at: {address}:{port}",
 				"{address}",
-				"{port}"
+				"{port}",
 			),
 			variables: { address, port: port.toString() },
 			sendTelemetry: true,
-		})
+		}),
 	);
 }
