@@ -64,7 +64,7 @@ function doBuild(buildNls, failOnError) {
 							defaultLanguages,
 							"i18n",
 							"out"
-					  )
+						)
 					: es.through()
 			)
 			.pipe(
@@ -72,7 +72,7 @@ function doBuild(buildNls, failOnError) {
 					? nls.bundleMetaDataFiles(
 							"ms-vscode.vscode-chrome-debug",
 							"out"
-					  )
+						)
 					: es.through()
 			)
 			.pipe(buildNls ? nls.bundleLanguageFiles() : es.through())
