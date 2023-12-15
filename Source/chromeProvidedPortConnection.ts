@@ -45,7 +45,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 							? await this.getLaunchedPort(
 									address,
 									this.userDataDir
-							  )
+								)
 							: port;
 					return launchedPort;
 				},

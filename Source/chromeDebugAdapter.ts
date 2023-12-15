@@ -223,7 +223,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						args.timeout,
 						undefined,
 						args.extraCRDPChannelPort
-				  );
+					);
 		});
 	}
 
@@ -502,10 +502,10 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				return this._domains.has("Overlay")
 					? this.chrome.Overlay.setPausedInDebuggerMessage({
 							message: this._pagePauseMessage,
-					  }).catch(() => {})
+						}).catch(() => {})
 					: (<any>this.chrome).Page.configureOverlay({
 							message: this._pagePauseMessage,
-					  }).catch(() => {});
+						}).catch(() => {});
 			});
 		}
 
@@ -521,7 +521,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			return this._domains.has("Overlay")
 				? this.chrome.Overlay.setPausedInDebuggerMessage({}).catch(
 						() => {}
-				  )
+					)
 				: (<any>this.chrome).Page.configureOverlay({}).catch(() => {});
 		});
 		super.onResumed();
@@ -809,12 +809,12 @@ function getSourceMapPathOverrides(
 				webRoot,
 				sourceMapPathOverrides,
 				/*warnOnMissing=*/ true
-		  )
+			)
 		: resolveWebRootPattern(
 				webRoot,
 				DefaultWebSourceMapPathOverrides,
 				/*warnOnMissing=*/ false
-		  );
+			);
 }
 
 /**
