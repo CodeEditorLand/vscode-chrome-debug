@@ -2,7 +2,7 @@
 	"name": "debugger-for-chrome",
 	"displayName": "[Deprecated] Debugger for Chrome",
 	"version": "0.0.1",
-	"private": "false",
+	"private": false,
 	"description": "%extension.description%",
 	"homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
 	"bugs": {
