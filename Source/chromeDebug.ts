@@ -5,15 +5,15 @@
 import * as nls from "vscode-nls"; // MUST BE FIRST IMPORT
 nls.config({ bundleFormat: nls.BundleFormat.standalone });
 
+import * as os from "os";
+import * as path from "path";
 import {
-	ChromeDebugSession,
-	logger,
-	UrlPathTransformer,
 	BaseSourceMapTransformer,
+	ChromeDebugSession,
+	UrlPathTransformer,
+	logger,
 	telemetry,
 } from "vscode-chrome-debug-core";
-import * as path from "path";
-import * as os from "os";
 import { defaultTargetFilter } from "./utils";
 
 import { ChromeDebugAdapter } from "./chromeDebugAdapter";
@@ -32,7 +32,7 @@ ChromeDebugSession.run(
 		chromeConnection: ChromeProvidedPortConnection,
 		pathTransformer: UrlPathTransformer,
 		sourceMapTransformer: BaseSourceMapTransformer,
-	})
+	}),
 );
 
 /* tslint:disable:no-var-requires */

@@ -5,35 +5,35 @@
 import * as nls from "vscode-nls";
 let localize = nls.loadMessageBundle();
 
-import * as os from "os";
 import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 
+import { ChildProcess, execSync, fork, spawn } from "child_process";
 import {
 	ChromeDebugAdapter as CoreDebugAdapter,
-	logger,
-	utils as coreUtils,
-	ISourceMapPathOverrides,
 	ChromeDebugSession,
-	telemetry,
-	ITelemetryPropertyCollector,
 	IOnPausedResult,
+	ISourceMapPathOverrides,
+	ITelemetryPropertyCollector,
 	Version,
+	logger,
+	telemetry,
+	utils as coreUtils,
 } from "vscode-chrome-debug-core";
-import { spawn, ChildProcess, fork, execSync } from "child_process";
 import { Crdp } from "vscode-chrome-debug-core";
 import { DebugProtocol } from "vscode-debugprotocol";
 
 import {
-	ILaunchRequestArgs,
 	IAttachRequestArgs,
 	ICommonRequestArgs,
+	ILaunchRequestArgs,
 	ISetExpressionArgs,
-	VSDebugProtocolCapabilities,
 	ISetExpressionResponseBody,
+	VSDebugProtocolCapabilities,
 } from "./chromeDebugInterfaces";
-import * as utils from "./utils";
 import * as errors from "./errors";
+import * as utils from "./utils";
 
 import { FinishedStartingUpEventArguments } from "vscode-chrome-debug-core/lib/src/executionTimingsReporter";
 import { ChromeProvidedPortConnection } from "./chromeProvidedPortConnection";
@@ -63,11 +63,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	protected _chromeConnection: ChromeProvidedPortConnection;
 
 	public initialize(
-		args: IExtendedInitializeRequestArguments
+		args: IExtendedInitializeRequestArguments,
 	): VSDebugProtocolCapabilities {
 		this._overlayHelper = new utils.DebounceHelper(/*timeoutMs=*/ 200);
 		const capabilities: VSDebugProtocolCapabilities = super.initialize(
-			args
+			args,
 		);
 		capabilities.supportsRestartRequest = true;
 		capabilities.supportsSetExpression = true;
@@ -89,7 +89,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	public launch(
 		args: ILaunchRequestArgs,
 		telemetryPropertyCollector: ITelemetryPropertyCollector,
-		seq?: number
+		seq?: number,
 	): Promise<void> {
 		if (
 			(args.breakOnLoad || typeof args.breakOnLoad === "undefined") &&
@@ -103,13 +103,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			if (args.shouldLaunchChromeUnelevated !== undefined) {
 				telemetryPropertyCollector.addTelemetryProperty(
 					"shouldLaunchChromeUnelevated",
-					args.shouldLaunchChromeUnelevated.toString()
+					args.shouldLaunchChromeUnelevated.toString(),
 				);
 			}
 			if (this._doesHostSupportLaunchUnelevatedProcessRequest) {
 				telemetryPropertyCollector.addTelemetryProperty(
 					"doesHostSupportLaunchUnelevated",
-					"true"
+					"true",
 				);
 			}
 			if (args.runtimeExecutable) {
@@ -117,7 +117,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				if (!re) {
 					return errors.getNotExistErrorResponse(
 						"runtimeExecutable",
-						args.runtimeExecutable
+						args.runtimeExecutable,
 					);
 				}
 
@@ -129,14 +129,14 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				return coreUtils.errP(
 					localize(
 						"attribute.chrome.missing",
-						'Can\'t find Chrome - install it or set the "runtimeExecutable" field in the launch config.'
-					)
+						'Can\'t find Chrome - install it or set the "runtimeExecutable" field in the launch config.',
+					),
 				);
 			}
 
 			// Start with remote debugging enabled
 			// allow port = 0
-			let port = args.port !== undefined ? args.port : 9222;
+			const port = args.port !== undefined ? args.port : 9222;
 			const chromeArgs: string[] = [];
 			const chromeEnv: coreUtils.IStringDictionary<string> =
 				args.env || null;
@@ -148,12 +148,12 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 			// Also start with extra stuff disabled
 			chromeArgs.push(
-				...["--no-first-run", "--no-default-browser-check"]
+				...["--no-first-run", "--no-default-browser-check"],
 			);
 			if (args.runtimeArgs) {
 				telemetryPropertyCollector.addTelemetryProperty(
 					"numberOfChromeCmdLineSwitchesBeingUsed",
-					String(args.runtimeArgs.length)
+					String(args.runtimeArgs.length),
 				);
 				chromeArgs.push(...args.runtimeArgs);
 			}
@@ -167,7 +167,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			) {
 				args.userDataDir = path.join(
 					os.tmpdir(),
-					`vscode-chrome-debug-userdatadir_${port}`
+					`vscode-chrome-debug-userdatadir_${port}`,
 				);
 			}
 
@@ -204,7 +204,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				chromeEnv,
 				chromeWorkingDir,
 				!!args.runtimeExecutable,
-				args.shouldLaunchChromeUnelevated
+				args.shouldLaunchChromeUnelevated,
 			);
 			if (this._chromeProc) {
 				this._chromeProc.on("error", (err) => {
@@ -222,8 +222,8 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						args.address,
 						args.timeout,
 						undefined,
-						args.extraCRDPChannelPort
-					);
+						args.extraCRDPChannelPort,
+				  );
 		});
 	}
 
@@ -238,7 +238,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	protected hookConnectionEvents(): void {
 		super.hookConnectionEvents();
 		this.chrome.Page.on("frameNavigated", (params) =>
-			this.onFrameNavigated(params)
+			this.onFrameNavigated(params),
 		);
 	}
 
@@ -256,7 +256,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					ChromeDebugSession.FinishedStartingUpEventName,
 					{
 						requestedContentWasDetected: true,
-					} as FinishedStartingUpEventArguments
+					} as FinishedStartingUpEventArguments,
 				);
 			} else if (url === "chrome-error://chromewebdata/") {
 				// Chrome couldn't retrieve the web-page in the requested url
@@ -265,7 +265,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					{
 						requestedContentWasDetected: false,
 						reasonForNotDetected: "UnreachableURL",
-					} as FinishedStartingUpEventArguments
+					} as FinishedStartingUpEventArguments,
 				);
 			} else if (url.startsWith("chrome-error://")) {
 				// Uknown chrome error
@@ -274,7 +274,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					{
 						requestedContentWasDetected: false,
 						reasonForNotDetected: "UnknownChromeError",
-					} as FinishedStartingUpEventArguments
+					} as FinishedStartingUpEventArguments,
 				);
 			}
 		}
@@ -291,9 +291,9 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                    }
                  */
 					this.events.emitMilestoneReached(
-						"RequestedNavigateToUserPage"
+						"RequestedNavigateToUserPage",
 					);
-				}
+				},
 			);
 		}
 
@@ -310,7 +310,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			typeof args.sourceMaps === "undefined" || args.sourceMaps;
 		args.sourceMapPathOverrides = getSourceMapPathOverrides(
 			args.webRoot,
-			args.sourceMapPathOverrides
+			args.sourceMapPathOverrides,
 		);
 		args.skipFileRegExps = ["^chrome-extension:.*"];
 
@@ -334,7 +334,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		address?: string,
 		timeout?: number,
 		websocketUrl?: string,
-		extraCRDPChannelPort?: number
+		extraCRDPChannelPort?: number,
 	): Promise<void> {
 		return super
 			.doAttach(
@@ -343,7 +343,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				address,
 				timeout,
 				websocketUrl,
-				extraCRDPChannelPort
+				extraCRDPChannelPort,
 			)
 			.then(async () => {
 				// Don't return this promise, a failure shouldn't fail attach
@@ -354,12 +354,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					.then(
 						(evalResponse) =>
 							logger.log(
-								"Target userAgent: " + evalResponse.result.value
+								"Target userAgent: " +
+									evalResponse.result.value,
 							),
 						(err) =>
 							logger.log(
-								"Getting userAgent failed: " + err.message
-							)
+								"Getting userAgent failed: " + err.message,
+							),
 					)
 					.then(() => {
 						const configDisableNetworkCache = (<ICommonRequestArgs>(
@@ -404,7 +405,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						},
 						(err) => {
 							logger.log(
-								"Getting userAgent failed: " + err.message
+								"Getting userAgent failed: " + err.message,
 							);
 							const properties = {
 								"Versions.Target.NoUserAgentReason":
@@ -412,7 +413,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 							} as telemetry.IExecutionResultTelemetryProperties;
 							coreUtils.fillErrorDetails(properties, err);
 							return properties;
-						}
+						},
 					);
 
 				// Send the versions information as it's own event so we can easily backfill other events in the user session if needed
@@ -438,8 +439,8 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				versionInformationPromise.then((versionInformation) =>
 					telemetry.telemetry.reportEvent(
 						"target-version",
-						versionInformation
-					)
+						versionInformation,
+					),
 				);
 
 				try {
@@ -451,16 +452,16 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						if (!browserVersion.isAtLeastVersion(0, 1)) {
 							// If this is true it means it's unknown version
 							logger.log(
-								`/json/version failed, attempting workaround to get the version`
+								`/json/version failed, attempting workaround to get the version`,
 							);
 							// If the original way failed, we try to use versionInformationPromise to get this information
 							const versionInformation =
 								await versionInformationPromise;
 							const alternativeBrowserVersion = Version.parse(
-								versionInformation["Versions.Target.Version"]
+								versionInformation["Versions.Target.Version"],
 							);
 							this._breakOnLoadHelper.setBrowserVersion(
-								alternativeBrowserVersion
+								alternativeBrowserVersion,
 							);
 						}
 					}
@@ -468,7 +469,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					// If something fails we report telemetry and we ignore it
 					telemetry.telemetry.reportEvent(
 						"break-on-load-target-version-workaround-failed",
-						exception
+						exception,
 					);
 				}
 
@@ -478,7 +479,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 }
             */
 				telemetry.telemetry.addCustomGlobalProperty(
-					versionInformationPromise
+					versionInformationPromise,
 				);
 			});
 	}
@@ -493,7 +494,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 	protected async onPaused(
 		notification: Crdp.Debugger.PausedEvent,
-		expectingStopReason = this._expectingStopReason
+		expectingStopReason = this._expectingStopReason,
 	): Promise<IOnPausedResult> {
 		const result = await super.onPaused(notification, expectingStopReason);
 
@@ -502,10 +503,10 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				return this._domains.has("Overlay")
 					? this.chrome.Overlay.setPausedInDebuggerMessage({
 							message: this._pagePauseMessage,
-						}).catch(() => {})
+					  }).catch(() => {})
 					: (<any>this.chrome).Page.configureOverlay({
 							message: this._pagePauseMessage,
-						}).catch(() => {});
+					  }).catch(() => {});
 			});
 		}
 
@@ -520,15 +521,15 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		this._overlayHelper.wait(() => {
 			return this._domains.has("Overlay")
 				? this.chrome.Overlay.setPausedInDebuggerMessage({}).catch(
-						() => {}
-					)
+						() => {},
+				  )
 				: (<any>this.chrome).Page.configureOverlay({}).catch(() => {});
 		});
 		super.onResumed();
 	}
 
 	public async disconnect(
-		args: DebugProtocol.DisconnectArguments
+		args: DebugProtocol.DisconnectArguments,
 	): Promise<void> {
 		const hadTerminated = this._hasTerminated;
 
@@ -553,7 +554,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	}
 
 	private async killChromeOnWindows(chromePID: number): Promise<void> {
-		let taskkillCmd = `taskkill /PID ${chromePID}`;
+		const taskkillCmd = `taskkill /PID ${chromePID}`;
 		logger.log(`Killing Chrome process by pid: ${taskkillCmd}`);
 		try {
 			execSync(taskkillCmd);
@@ -563,23 +564,23 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 		for (let i = 0; i < 10; i++) {
 			// Check to see if the process is still running, with CSV output format
-			let tasklistCmd = `tasklist /FI "PID eq ${chromePID}" /FO CSV`;
+			const tasklistCmd = `tasklist /FI "PID eq ${chromePID}" /FO CSV`;
 			logger.log(`Looking up process by pid: ${tasklistCmd}`);
-			let tasklistOutput = execSync(tasklistCmd).toString();
+			const tasklistOutput = execSync(tasklistCmd).toString();
 
 			// If the process is found, tasklist will output CSV with one of the values being the PID. Exit code will be 0.
 			// If the process is not found, tasklist will give a generic "not found" message instead. Exit code will also be 0.
 			// If we see an entry in the CSV for the PID, then we can assume the process was found.
 			if (!tasklistOutput.includes(`"${chromePID}"`)) {
 				logger.log(
-					`Chrome process with pid ${chromePID} is not running`
+					`Chrome process with pid ${chromePID} is not running`,
 				);
 				return;
 			}
 
 			// Give the process some time to close gracefully
 			logger.log(
-				`Chrome process with pid ${chromePID} is still alive, waiting...`
+				`Chrome process with pid ${chromePID} is still alive, waiting...`,
 			);
 			await new Promise<void>((resolve) => {
 				setTimeout(resolve, 200);
@@ -587,9 +588,9 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		}
 
 		// At this point we can assume the process won't close on its own, so force kill it
-		let taskkillForceCmd = `taskkill /F /PID ${chromePID}`;
+		const taskkillForceCmd = `taskkill /F /PID ${chromePID}`;
 		logger.log(
-			`Killing Chrome process timed out. Killing again using force: ${taskkillForceCmd}`
+			`Killing Chrome process timed out. Killing again using force: ${taskkillForceCmd}`,
 		);
 		try {
 			execSync(taskkillForceCmd);
@@ -611,7 +612,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		env: coreUtils.IStringDictionary<string>,
 		cwd: string,
 		usingRuntimeExecutable: boolean,
-		shouldLaunchUnelevated: boolean
+		shouldLaunchUnelevated: boolean,
 	): Promise<ChildProcess> {
 		/* __GDPR__FRAGMENT__
            "StepNames" : {
@@ -626,13 +627,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			if (this._doesHostSupportLaunchUnelevatedProcessRequest) {
 				chromePid = await this.spawnChromeUnelevatedWithClient(
 					chromePath,
-					chromeArgs
+					chromeArgs,
 				);
 			} else {
 				chromePid =
 					await this.spawnChromeUnelevatedWithWindowsScriptHost(
 						chromePath,
-						chromeArgs
+						chromeArgs,
 					);
 			}
 
@@ -656,7 +657,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			const chromeProc = fork(
 				getChromeSpawnHelperPath(),
 				[chromePath, ...chromeArgs],
-				options
+				options,
 			);
 			chromeProc.unref();
 
@@ -703,11 +704,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 	private async spawnChromeUnelevatedWithWindowsScriptHost(
 		chromePath: string,
-		chromeArgs: string[]
+		chromeArgs: string[],
 	): Promise<number> {
 		const semaphoreFile = path.join(
 			os.tmpdir(),
-			"launchedUnelevatedChromeProcess.id"
+			"launchedUnelevatedChromeProcess.id",
 		);
 		if (fs.existsSync(semaphoreFile)) {
 			// remove the previous semaphoreFile if it exists.
@@ -722,7 +723,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				chromePath,
 				...chromeArgs,
 			],
-			{}
+			{},
 		);
 
 		chromeProc.unref();
@@ -741,7 +742,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	}
 
 	private getFullEnv(
-		customEnv: coreUtils.IStringDictionary<string>
+		customEnv: coreUtils.IStringDictionary<string>,
 	): coreUtils.IStringDictionary<string> {
 		const env = {
 			...process.env,
@@ -756,7 +757,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 	private async spawnChromeUnelevatedWithClient(
 		chromePath: string,
-		chromeArgs: string[]
+		chromeArgs: string[],
 	): Promise<number> {
 		return new Promise<number>((resolve, reject) => {
 			this._session.sendRequest(
@@ -767,18 +768,18 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				},
 				10000,
 				(response) => {
-					if (!response.success) {
-						reject(new Error(response.message));
-					} else {
+					if (response.success) {
 						resolve(response.body.processId);
+					} else {
+						reject(new Error(response.message));
 					}
-				}
+				},
 			);
 		});
 	}
 
 	public async setExpression(
-		args: ISetExpressionArgs
+		args: ISetExpressionArgs,
 	): Promise<ISetExpressionResponseBody> {
 		const reconstructedExpression = `${args.expression} = ${args.value}`;
 		const evaluateEventArgs: DebugProtocol.EvaluateArguments = {
@@ -802,19 +803,19 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 function getSourceMapPathOverrides(
 	webRoot: string,
-	sourceMapPathOverrides?: ISourceMapPathOverrides
+	sourceMapPathOverrides?: ISourceMapPathOverrides,
 ): ISourceMapPathOverrides {
 	return sourceMapPathOverrides
 		? resolveWebRootPattern(
 				webRoot,
 				sourceMapPathOverrides,
-				/*warnOnMissing=*/ true
-			)
+				/*warnOnMissing=*/ true,
+		  )
 		: resolveWebRootPattern(
 				webRoot,
 				DefaultWebSourceMapPathOverrides,
-				/*warnOnMissing=*/ false
-			);
+				/*warnOnMissing=*/ false,
+		  );
 }
 
 /**
@@ -825,19 +826,19 @@ function getSourceMapPathOverrides(
 export function resolveWebRootPattern(
 	webRoot: string,
 	sourceMapPathOverrides: ISourceMapPathOverrides,
-	warnOnMissing: boolean
+	warnOnMissing: boolean,
 ): ISourceMapPathOverrides {
 	const resolvedOverrides: ISourceMapPathOverrides = {};
-	for (let pattern in sourceMapPathOverrides) {
+	for (const pattern in sourceMapPathOverrides) {
 		const replacePattern = replaceWebRootInSourceMapPathOverridesEntry(
 			webRoot,
 			pattern,
-			warnOnMissing
+			warnOnMissing,
 		);
 		const replacePatternValue = replaceWebRootInSourceMapPathOverridesEntry(
 			webRoot,
 			sourceMapPathOverrides[pattern],
-			warnOnMissing
+			warnOnMissing,
 		);
 
 		resolvedOverrides[replacePattern] = replacePatternValue;
@@ -849,7 +850,7 @@ export function resolveWebRootPattern(
 function replaceWebRootInSourceMapPathOverridesEntry(
 	webRoot: string,
 	entry: string,
-	warnOnMissing: boolean
+	warnOnMissing: boolean,
 ): string {
 	const webRootIndex = entry.indexOf("${webRoot}");
 	if (webRootIndex === 0) {
@@ -857,12 +858,12 @@ function replaceWebRootInSourceMapPathOverridesEntry(
 			return entry.replace("${webRoot}", webRoot);
 		} else if (warnOnMissing) {
 			logger.log(
-				"Warning: sourceMapPathOverrides entry contains ${webRoot}, but webRoot is not set"
+				"Warning: sourceMapPathOverrides entry contains ${webRoot}, but webRoot is not set",
 			);
 		}
 	} else if (webRootIndex > 0) {
 		logger.log(
-			"Warning: in a sourceMapPathOverrides entry, ${webRoot} is only valid at the beginning of the path"
+			"Warning: in a sourceMapPathOverrides entry, ${webRoot} is only valid at the beginning of the path",
 		);
 	}
 
@@ -895,7 +896,7 @@ function findExecutable(program: string): string | undefined {
 }
 
 async function findNewlyLaunchedChromeProcess(
-	semaphoreFile: string
+	semaphoreFile: string,
 ): Promise<string> {
 	const regexPattern = /processid\s+=\s+(\d+)\s*;/i;
 	let lastAccessFileContent: string;
@@ -910,7 +911,7 @@ async function findNewlyLaunchedChromeProcess(
 			const lines = lastAccessFileContent.split("\n");
 
 			const matchedLines = (lines || []).filter((line) =>
-				line.match(regexPattern)
+				line.match(regexPattern),
 			);
 			if (matchedLines.length > 1) {
 				throw new Error(`Unexpected semaphore file format ${lines}`);
@@ -928,7 +929,7 @@ async function findNewlyLaunchedChromeProcess(
 	}
 
 	const error = new Error(`Cannot acquire Chrome process id`);
-	let telemetryProperties: any = {
+	const telemetryProperties: any = {
 		semaphoreFileContent: lastAccessFileContent,
 	};
 

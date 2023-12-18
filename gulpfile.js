@@ -39,9 +39,7 @@ const watchedSources = ["src/**/*", "test/**/*"];
 
 const scripts = ["src/launchUnelevated.js"];
 
-const lintSources = ["src", "test"].map(function (tsFolder) {
-	return tsFolder + "/**/*.ts";
-});
+const lintSources = ["src", "test"].map((tsFolder) => tsFolder + "/**/*.ts");
 
 const tsProject = ts.createProject("tsconfig.json", { typescript });
 function doBuild(buildNls, failOnError) {
@@ -63,17 +61,17 @@ function doBuild(buildNls, failOnError) {
 					? nls.createAdditionalLanguageFiles(
 							defaultLanguages,
 							"i18n",
-							"out"
-						)
-					: es.through()
+							"out",
+					  )
+					: es.through(),
 			)
 			.pipe(
 				buildNls
 					? nls.bundleMetaDataFiles(
 							"ms-vscode.vscode-chrome-debug",
-							"out"
-						)
-					: es.through()
+							"out",
+					  )
+					: es.through(),
 			)
 			.pipe(buildNls ? nls.bundleLanguageFiles() : es.through())
 
@@ -81,7 +79,7 @@ function doBuild(buildNls, failOnError) {
 				sourcemaps.write(".", {
 					includeContent: false,
 					sourceRoot: ".",
-				})
+				}),
 			) // .. to compensate for TS returning paths from 'out'
 			.pipe(gulp.dest("out"))
 			.once("error", () => {
@@ -114,7 +112,7 @@ gulp.task(
 	gulp.series("clean", "_dev-build", () => {
 		log("Watching build sources...");
 		return gulp.watch(watchedSources, gulp.series("_dev-build"));
-	})
+	}),
 );
 
 gulp.task("tslint", () => {
@@ -123,7 +121,7 @@ gulp.task("tslint", () => {
 		.pipe(
 			tslint({
 				formatter: "verbose",
-			})
+			}),
 		)
 		.pipe(tslint.report({ emitError: false }));
 });
@@ -147,14 +145,14 @@ function verifyNoLinkedModules() {
 				files.map((file) => {
 					const modulePath = path.join(".", "node_modules", file);
 					return verifyNotALinkedModule(modulePath);
-				})
+				}),
 			).then(resolve, reject);
 		});
 	});
 }
 
 gulp.task("verify-no-linked-modules", (cb) =>
-	verifyNoLinkedModules().then(() => cb, cb)
+	verifyNoLinkedModules().then(() => cb, cb),
 );
 
 gulp.task("vsce-publish", () => {
@@ -192,11 +190,11 @@ gulp.task(
 			.pipe(
 				nls.createXlfFiles(
 					translationProjectName,
-					translationExtensionName
-				)
+					translationExtensionName,
+				),
 			)
 			.pipe(gulp.dest(path.join("..", "vscode-translations-export")));
-	})
+	}),
 );
 
 gulp.task("translations-import", () => {
@@ -209,14 +207,14 @@ gulp.task("translations-import", () => {
 	return es
 		.merge(
 			defaultLanguages.map((language) => {
-				let id = language.transifexId || language.id;
+				const id = language.transifexId || language.id;
 				console.log(
 					path.join(
 						options.location,
 						id,
 						"vscode-extensions",
-						`${translationExtensionName}.xlf`
-					)
+						`${translationExtensionName}.xlf`,
+					),
 				);
 				return gulp
 					.src(
@@ -224,12 +222,12 @@ gulp.task("translations-import", () => {
 							options.location,
 							id,
 							"vscode-extensions",
-							`${translationExtensionName}.xlf`
-						)
+							`${translationExtensionName}.xlf`,
+						),
 					)
 					.pipe(nls.prepareJsonFiles())
 					.pipe(gulp.dest(path.join("./i18n", language.folderName)));
-			})
+			}),
 		)
 		.on("end", () => done());
 });
@@ -244,14 +242,14 @@ gulp.task("translations-import", (done) => {
 	});
 	es.merge(
 		defaultLanguages.map((language) => {
-			let id = language.transifexId || language.id;
+			const id = language.transifexId || language.id;
 			log(
 				path.join(
 					options.location,
 					id,
 					"vscode-extensions",
-					`${translationExtensionName}.xlf`
-				)
+					`${translationExtensionName}.xlf`,
+				),
 			);
 			return gulp
 				.src(
@@ -259,15 +257,15 @@ gulp.task("translations-import", (done) => {
 						options.location,
 						id,
 						"vscode-extensions",
-						`${translationExtensionName}.xlf`
-					)
+						`${translationExtensionName}.xlf`,
+					),
 				)
 				.pipe(nls.prepareJsonFiles())
 				.pipe(gulp.dest(path.join("./i18n", language.folderName)));
-		})
+		}),
 	).pipe(
 		es.wait(() => {
 			done();
-		})
+		}),
 	);
 });

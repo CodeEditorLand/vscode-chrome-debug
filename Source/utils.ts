@@ -3,7 +3,7 @@
  *--------------------------------------------------------*/
 
 import * as path from "path";
-import { utils as coreUtils, chromeConnection } from "vscode-chrome-debug-core";
+import { chromeConnection, utils as coreUtils } from "vscode-chrome-debug-core";
 
 const WIN_APPDATA = process.env.LOCALAPPDATA || "/";
 const DEFAULT_CHROME_PATH = {
@@ -12,7 +12,7 @@ const DEFAULT_CHROME_PATH = {
 	WIN: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
 	WIN_LOCALAPPDATA: path.join(
 		WIN_APPDATA,
-		"Google\\Chrome\\Application\\chrome.exe"
+		"Google\\Chrome\\Application\\chrome.exe",
 	),
 	WINx86: "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
 };
@@ -71,7 +71,7 @@ export class DebounceHelper {
 }
 
 export const getTargetFilter = (
-	targetTypes?: string[]
+	targetTypes?: string[],
 ): chromeConnection.ITargetFilter => {
 	if (targetTypes) {
 		return (target) =>

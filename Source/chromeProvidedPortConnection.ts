@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { chromeConnection } from "vscode-chrome-debug-core";
-import { utils, chromeUtils } from "vscode-chrome-debug-core";
+import { chromeUtils, utils } from "vscode-chrome-debug-core";
 import { logger } from "vscode-chrome-debug-core";
 import * as errors from "./errors";
 
@@ -30,7 +30,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 		port = 9222,
 		targetUrl?: string,
 		timeout = chromeConnection.ChromeConnection.ATTACH_TIMEOUT,
-		extraCRDPChannelPort?: number
+		extraCRDPChannelPort?: number,
 	): Promise<void> {
 		if (
 			port === 0 &&
@@ -44,13 +44,13 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 						port === 0 && this.userDataDir
 							? await this.getLaunchedPort(
 									address,
-									this.userDataDir
-								)
+									this.userDataDir,
+							  )
 							: port;
 					return launchedPort;
 				},
 				timeout,
-				/*intervalDelay=*/ 200
+				/*intervalDelay=*/ 200,
 			)
 			.catch((err) => Promise.reject(err))
 			.then((launchedPort) => {
@@ -59,7 +59,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 					launchedPort,
 					targetUrl,
 					timeout,
-					extraCRDPChannelPort
+					extraCRDPChannelPort,
 				);
 			});
 	}
@@ -71,7 +71,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 	 */
 	private async getLaunchedPort(
 		host: string,
-		userDataDir: string
+		userDataDir: string,
 	): Promise<number> {
 		logger.verbose("Looking for DevToolsActivePort file...");
 		const launchedPort = await chromeUtils.getLaunchedPort(userDataDir);
@@ -79,7 +79,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 		const portInUse = await chromeUtils.isPortInUse(
 			launchedPort,
 			host,
-			100
+			100,
 		);
 		if (!portInUse) {
 			// bail, the port isn't open
