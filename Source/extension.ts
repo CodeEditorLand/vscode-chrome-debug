@@ -15,21 +15,21 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
 			"extension.chrome-debug.toggleSkippingFile",
-			toggleSkippingFile,
-		),
+			toggleSkippingFile
+		)
 	);
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
 			"extension.chrome-debug.toggleSmartStep",
-			toggleSmartStep,
-		),
+			toggleSmartStep
+		)
 	);
 
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider(
 			"legacy-chrome",
-			new ChromeConfigurationProvider(),
-		),
+			new ChromeConfigurationProvider()
+		)
 	);
 }
 
@@ -44,7 +44,7 @@ export class ChromeConfigurationProvider
 	async resolveDebugConfiguration(
 		folder: vscode.WorkspaceFolder | undefined,
 		config: vscode.DebugConfiguration,
-		token?: vscode.CancellationToken,
+		token?: vscode.CancellationToken
 	): Promise<vscode.DebugConfiguration> {
 		// if launch.json is missing or empty
 		if (!config.type && !config.request && !config.name) {
@@ -57,7 +57,7 @@ export class ChromeConfigurationProvider
 			const discovery =
 				new Core.chromeTargetDiscoveryStrategy.ChromeTargetDiscovery(
 					new Core.NullLogger(),
-					new Core.telemetry.NullTelemetryReporter(),
+					new Core.telemetry.NullTelemetryReporter()
 				);
 
 			let targets;
@@ -68,7 +68,7 @@ export class ChromeConfigurationProvider
 					config.targetTypes === undefined
 						? defaultTargetFilter
 						: getTargetFilter(config.targetTypes),
-					config.url || config.urlFilter,
+					config.url || config.urlFilter
 				);
 			} catch (e) {
 				// Target not running?
@@ -110,7 +110,7 @@ function mapRemoteClientUriToInternalPath(remoteUri: vscode.Uri): string {
 		internalPath = path.win32.join(
 			driveLetterMatch[0],
 			remotePathComponent,
-			uriPath.substr(2),
+			uriPath.substr(2)
 		);
 	} else {
 		internalPath = path.posix.join("/", remotePathComponent, uriPath);
@@ -121,13 +121,13 @@ function mapRemoteClientUriToInternalPath(remoteUri: vscode.Uri): string {
 
 function rewriteWorkspaceRoot(
 	configObject: any,
-	internalWorkspaceRootPath: string,
+	internalWorkspaceRootPath: string
 ): void {
 	for (const key in configObject) {
 		if (typeof configObject[key] === "string") {
 			configObject[key] = configObject[key].replace(
 				/\$\{workspace(Root|Folder)\}/g,
-				internalWorkspaceRootPath,
+				internalWorkspaceRootPath
 			);
 		} else {
 			rewriteWorkspaceRoot(configObject[key], internalWorkspaceRootPath);
@@ -137,7 +137,7 @@ function rewriteWorkspaceRoot(
 
 function resolveRemoteUris(
 	folder: vscode.WorkspaceFolder | undefined,
-	config: vscode.DebugConfiguration,
+	config: vscode.DebugConfiguration
 ): void {
 	if (folder && folder.uri.scheme === remoteUriScheme) {
 		const internalPath = mapRemoteClientUriToInternalPath(folder.uri);
@@ -159,7 +159,7 @@ function toggleSkippingFile(aPath: string): void {
 				: { sourceReference: aPath };
 		vscode.debug.activeDebugSession.customRequest(
 			"toggleSkipFileStatus",
-			args,
+			args
 		);
 	}
 }
@@ -175,7 +175,7 @@ interface ITargetQuickPickItem extends vscode.QuickPickItem {
 }
 
 async function pickTarget(
-	targets: Core.chromeConnection.ITarget[],
+	targets: Core.chromeConnection.ITarget[]
 ): Promise<ITargetQuickPickItem> {
 	const items = targets.map(
 		(target) =>
@@ -183,7 +183,7 @@ async function pickTarget(
 				label: unescapeTargetTitle(target.title),
 				detail: target.url,
 				websocketDebuggerUrl: target.webSocketDebuggerUrl,
-			},
+			}
 	);
 
 	const placeHolder = localize("chrome.targets.placeholder", "Select a tab");
