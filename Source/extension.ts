@@ -47,7 +47,7 @@ export class ChromeConfigurationProvider
 		token?: vscode.CancellationToken,
 	): Promise<vscode.DebugConfiguration> {
 		// if launch.json is missing or empty
-		if (!config.type && !config.request && !config.name) {
+		if (!(config.type || config.request || config.name)) {
 			// Return null so it will create a launch.json and fall back on provideDebugConfigurations - better to point the user towards the config
 			// than try to work automagically.
 			return null;
@@ -106,7 +106,7 @@ function mapRemoteClientUriToInternalPath(remoteUri: vscode.Uri): string {
 	const uriPath = getFsPath(remoteUri);
 	const driveLetterMatch = uriPath.match(/^[A-Za-z]:/);
 	let internalPath: string;
-	if (!!driveLetterMatch) {
+	if (driveLetterMatch) {
 		internalPath = path.win32.join(
 			driveLetterMatch[0],
 			remotePathComponent,
@@ -149,7 +149,7 @@ function resolveRemoteUris(
 function toggleSkippingFile(aPath: string): void {
 	if (!aPath) {
 		const activeEditor = vscode.window.activeTextEditor;
-		aPath = activeEditor && activeEditor.document.fileName;
+		aPath = activeEditor?.document.fileName;
 	}
 
 	if (aPath && vscode.debug.activeDebugSession) {

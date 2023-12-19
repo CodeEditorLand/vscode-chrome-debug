@@ -39,7 +39,7 @@ const watchedSources = ["src/**/*", "test/**/*"];
 
 const scripts = ["src/launchUnelevated.js"];
 
-const lintSources = ["src", "test"].map((tsFolder) => tsFolder + "/**/*.ts");
+const lintSources = ["src", "test"].map((tsFolder) => `${tsFolder}/**/*.ts`);
 
 const tsProject = ts.createProject("tsconfig.json", { typescript });
 function doBuild(buildNls, failOnError) {
@@ -130,7 +130,7 @@ function verifyNotALinkedModule(modulePath) {
 	return new Promise((resolve, reject) => {
 		fs.lstat(modulePath, (err, stat) => {
 			if (stat.isSymbolicLink()) {
-				reject(new Error("Symbolic link found: " + modulePath));
+				reject(new Error(`Symbolic link found: ${modulePath}`));
 			} else {
 				resolve();
 			}
@@ -198,7 +198,7 @@ gulp.task(
 );
 
 gulp.task("translations-import", () => {
-	var options = minimist(process.argv.slice(2), {
+	const options = minimist(process.argv.slice(2), {
 		string: "location",
 		default: {
 			location: "../vscode-translations-import",
@@ -234,7 +234,7 @@ gulp.task("translations-import", () => {
 
 // Imports localization from raw localized MLCP strings to VS Code .i18n.json files
 gulp.task("translations-import", (done) => {
-	var options = minimist(process.argv.slice(2), {
+	const options = minimist(process.argv.slice(2), {
 		string: "location",
 		default: {
 			location: "../vscode-translations-import",

@@ -35,8 +35,9 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 		if (
 			port === 0 &&
 			(this.userDataDir === undefined || this.userDataDir === "")
-		)
+		) {
 			return errors.chromeProvidedPortWithoutUserDataDir();
+		}
 		return utils
 			.retryAsync(
 				async () => {

@@ -81,7 +81,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		}
 
 		this._doesHostSupportLaunchUnelevatedProcessRequest =
-			args.supportsLaunchUnelevatedProcessRequest || false;
+			args.supportsLaunchUnelevatedProcessRequest;
 
 		return capabilities;
 	}
@@ -143,7 +143,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			const chromeWorkingDir: string = args.cwd || null;
 
 			if (!args.noDebug) {
-				chromeArgs.push("--remote-debugging-port=" + port);
+				chromeArgs.push(`--remote-debugging-port=${port}`);
 			}
 
 			// Also start with extra stuff disabled
@@ -172,7 +172,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			}
 
 			if (args.userDataDir) {
-				chromeArgs.push("--user-data-dir=" + args.userDataDir);
+				chromeArgs.push(`--user-data-dir=${args.userDataDir}`);
 				this._chromeConnection.setUserDataDir(args.userDataDir);
 			}
 
@@ -208,7 +208,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			);
 			if (this._chromeProc) {
 				this._chromeProc.on("error", (err) => {
-					const errMsg = "Chrome error: " + err;
+					const errMsg = `Chrome error: ${err}`;
 					logger.error(errMsg);
 					this.terminateSession(errMsg);
 				});
@@ -301,7 +301,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	}
 
 	public commonArgs(args: ICommonRequestArgs): void {
-		if (args.webRoot && (!args.pathMapping || !args.pathMapping["/"])) {
+		if (args.webRoot && !args.pathMapping?.["/"]) {
 			args.pathMapping = args.pathMapping || {};
 			args.pathMapping["/"] = args.webRoot;
 		}
@@ -354,12 +354,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					.then(
 						(evalResponse) =>
 							logger.log(
-								"Target userAgent: " +
-									evalResponse.result.value,
+								`Target userAgent: ${evalResponse.result.value}`,
 							),
 						(err) =>
 							logger.log(
-								"Getting userAgent failed: " + err.message,
+								`Getting userAgent failed: ${err.message}`,
 							),
 					)
 					.then(() => {
@@ -405,7 +404,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						},
 						(err) => {
 							logger.log(
-								"Getting userAgent failed: " + err.message,
+								`Getting userAgent failed: ${err.message}`,
 							);
 							const properties = {
 								"Versions.Target.NoUserAgentReason":
@@ -452,7 +451,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						if (!browserVersion.isAtLeastVersion(0, 1)) {
 							// If this is true it means it's unknown version
 							logger.log(
-								`/json/version failed, attempting workaround to get the version`,
+								"/json/version failed, attempting workaround to get the version",
 							);
 							// If the original way failed, we try to use versionInformationPromise to get this information
 							const versionInformation =
@@ -663,21 +662,21 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 			chromeProc.on("message", (data) => {
 				const pidStr = data.toString();
-				logger.log("got chrome PID: " + pidStr);
+				logger.log(`got chrome PID: ${pidStr}`);
 				this._chromePID = parseInt(pidStr, 10);
 			});
 
 			chromeProc.on("error", (err) => {
-				const errMsg = "chromeSpawnHelper error: " + err;
+				const errMsg = `chromeSpawnHelper error: ${err}`;
 				logger.error(errMsg);
 			});
 
 			chromeProc.stderr.on("data", (data) => {
-				logger.error("[chromeSpawnHelper] " + data.toString());
+				logger.error(`[chromeSpawnHelper] ${data.toString()}`);
 			});
 
 			chromeProc.stdout.on("data", (data) => {
-				logger.log("[chromeSpawnHelper] " + data.toString());
+				logger.log(`[chromeSpawnHelper] ${data.toString()}`);
 			});
 
 			return chromeProc;
@@ -928,7 +927,7 @@ async function findNewlyLaunchedChromeProcess(
 		});
 	}
 
-	const error = new Error(`Cannot acquire Chrome process id`);
+	const error = new Error("Cannot acquire Chrome process id");
 	const telemetryProperties: any = {
 		semaphoreFileContent: lastAccessFileContent,
 	};
