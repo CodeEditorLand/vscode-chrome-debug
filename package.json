@@ -413,7 +413,7 @@
 		"@types/puppeteer": "5.4.7",
 		"@types/source-map": "0.5.2",
 		"@types/tmp": "0.2.6",
-		"chai": "4.3.10",
+		"chai": "5.0.0",
 		"chai-string": "1.5.0",
 		"concurrently": "8.2.2",
 		"del": "7.1.0",
