@@ -437,7 +437,7 @@
 		"ts-loader": "^1.0.0",
 		"typemoq": "^2.1.0",
 		"typescript": "^3.9.3",
-		"typescript-esbuild": "latest",
+		"typescript-esbuild": "0.4.5",
 		"vsce": "^1.71.0",
 		"vscode": "^1.1.37",
 		"vscode-chrome-debug-core-testsupport": "^4.0.0",
