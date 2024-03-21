@@ -1,26 +1,8 @@
 {
-	"name": "my-app",
-	"version": "0.0.1",
-	"private": false,
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
-	"bugs": {
-		"url": "https://github.com/CodeEditorLand/Foundation/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Playform",
 		"email": "Hello@Playform.Cloud",
+		"name": "Playform",
 		"url": "https://playform.cloud"
-	},
-	"type": "module",
-	"scripts": {
-		"build": "node scripts/build.js",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"start": "node scripts/start.js"
 	},
 	"babel": {
 		"presets": [
@@ -33,50 +15,8 @@
 		"not ie <= 11",
 		"not op_mini all"
 	],
-	"jest": {
-		"collectCoverageFrom": [
-			"src/**/*.{js,jsx,ts,tsx}",
-			"!src/**/*.d.ts"
-		],
-		"moduleFileExtensions": [
-			"web.js",
-			"js",
-			"web.ts",
-			"ts",
-			"web.tsx",
-			"tsx",
-			"json",
-			"web.jsx",
-			"jsx",
-			"node"
-		],
-		"moduleNameMapper": {
-			"^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-			"^react-native$": "react-native-web"
-		},
-		"resolver": "jest-pnp-resolver",
-		"setupFiles": [
-			"react-app-polyfill/jsdom"
-		],
-		"testEnvironment": "jsdom",
-		"testMatch": [
-			"<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-			"<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
-		],
-		"testURL": "http://localhost",
-		"transform": {
-			"^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js",
-			"^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-			"^.+\\.css$": "<rootDir>/config/jest/cssTransform.js"
-		},
-		"transformIgnorePatterns": [
-			"[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-			"^.+\\.module\\.(css|sass|scss)$"
-		],
-		"watchPlugins": [
-			"C:\\development\\react_test_project\\my-app\\node_modules\\jest-watch-typeahead\\filename.js",
-			"C:\\development\\react_test_project\\my-app\\node_modules\\jest-watch-typeahead\\testname.js"
-		]
+	"bugs": {
+		"url": "https://github.com/CodeEditorLand/Foundation/issues"
 	},
 	"dependencies": {
 		"@babel/core": "7.2.2",
@@ -127,9 +67,69 @@
 	"devDependencies": {
 		"clean-webpack-plugin": "^2.0.0",
 		"copy-webpack-plugin": "^5.0.1",
-		"typescript-esbuild": "0.4.5"
+		"typescript-esbuild": ""
 	},
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"jest": {
+		"collectCoverageFrom": [
+			"src/**/*.{js,jsx,ts,tsx}",
+			"!src/**/*.d.ts"
+		],
+		"moduleFileExtensions": [
+			"web.js",
+			"js",
+			"web.ts",
+			"ts",
+			"web.tsx",
+			"tsx",
+			"json",
+			"web.jsx",
+			"jsx",
+			"node"
+		],
+		"moduleNameMapper": {
+			"^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+			"^react-native$": "react-native-web"
+		},
+		"resolver": "jest-pnp-resolver",
+		"setupFiles": [
+			"react-app-polyfill/jsdom"
+		],
+		"testEnvironment": "jsdom",
+		"testMatch": [
+			"<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+			"<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+		],
+		"testURL": "http://localhost",
+		"transform": {
+			"^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js",
+			"^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+			"^.+\\.css$": "<rootDir>/config/jest/cssTransform.js"
+		},
+		"transformIgnorePatterns": [
+			"[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+			"^.+\\.module\\.(css|sass|scss)$"
+		],
+		"watchPlugins": [
+			"C:\\development\\react_test_project\\my-app\\node_modules\\jest-watch-typeahead\\filename.js",
+			"C:\\development\\react_test_project\\my-app\\node_modules\\jest-watch-typeahead\\testname.js"
+		]
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"name": "my-app",
+	"private": false,
 	"publishConfig": {
 		"access": "public"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"scripts": {
+		"build": "node scripts/build.js",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+		"start": "node scripts/start.js"
+	},
+	"type": "module",
+	"version": "0.0.1"
 }
