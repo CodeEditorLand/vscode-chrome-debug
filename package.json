@@ -1,16 +1,39 @@
 {
-	"activationEvents": [
-		"onDebugResolve:legacy-chrome",
-		"onCommand:extension.chrome-debug.toggleSkippingFile",
-		"onCommand:extension.chrome-debug.toggleSmartStep"
-	],
-	"author": {
-		"email": "Hello@Playform.Cloud",
-		"name": "Playform",
-		"url": "https://playform.cloud"
-	},
+	"name": "debugger-for-chrome",
+	"displayName": "[Deprecated] Debugger for Chrome",
+	"version": "0.0.1",
+	"private": false,
+	"description": "%extension.description%",
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
 	"bugs": {
 		"url": "https://github.com/CodeEditorLand/Foundation/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "Playform",
+		"email": "Hello@Playform.Cloud",
+		"url": "https://playform.cloud"
+	},
+	"type": "module",
+	"main": "./out/src/extension",
+	"scripts": {
+		"allIntTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json \"./out/test/int/**/*.test.js\"",
+		"build": "gulp build",
+		"frameworkTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json ./out/test/int/framework/*.test.js",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"intTest": "mocha --exit --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
+		"major": "npm version major -m '%s'",
+		"minor": "npm version minor -m '%s'",
+		"package": "gulp package",
+		"patch": "npm version patch -m '%s'",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+		"start": "node out/src/chromeDebug.js --server=4712",
+		"vscode:prepublish": "gulp verify-no-linked-modules",
+		"watch": "gulp watch"
 	},
 	"contributes": {
 		"breakpoints": [
@@ -368,12 +391,16 @@
 			]
 		}
 	},
+	"activationEvents": [
+		"onDebugResolve:legacy-chrome",
+		"onCommand:extension.chrome-debug.toggleSkippingFile",
+		"onCommand:extension.chrome-debug.toggleSmartStep"
+	],
 	"dependencies": {
 		"vscode-chrome-debug-core": "^6.8.9",
 		"vscode-debugadapter": "^1.40.0",
 		"vscode-nls": "^4.1.1"
 	},
-	"description": "%extension.description%",
 	"devDependencies": {
 		"@types/chai": "^4.1.7",
 		"@types/chai-string": "^1.4.1",
@@ -410,7 +437,7 @@
 		"ts-loader": "^1.0.0",
 		"typemoq": "^2.1.0",
 		"typescript": "^3.9.3",
-		"typescript-esbuild": "",
+		"typescript-esbuild": "0.4.5",
 		"vsce": "^1.71.0",
 		"vscode": "^1.1.37",
 		"vscode-chrome-debug-core-testsupport": "^4.0.0",
@@ -418,38 +445,11 @@
 		"vscode-debugprotocol": "^1.37.0",
 		"vscode-nls-dev": "^3.3.1"
 	},
-	"displayName": "[Deprecated] Debugger for Chrome",
-	"extensionKind": [
-		"ui"
-	],
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
-	"icon": "images/icon.png",
-	"license": "SEE LICENSE IN LICENSE",
-	"main": "./out/src/extension",
-	"name": "debugger-for-chrome",
-	"private": false,
 	"publishConfig": {
 		"access": "public"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
-	},
-	"scripts": {
-		"allIntTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json \"./out/test/int/**/*.test.js\"",
-		"build": "gulp build",
-		"frameworkTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json ./out/test/int/framework/*.test.js",
-		"intTest": "mocha --exit --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
-		"major": "npm version major -m '%s'",
-		"minor": "npm version minor -m '%s'",
-		"package": "gulp package",
-		"patch": "npm version patch -m '%s'",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"start": "node out/src/chromeDebug.js --server=4712",
-		"vscode:prepublish": "gulp verify-no-linked-modules",
-		"watch": "gulp watch"
-	},
-	"type": "module",
-	"version": "0.0.1"
+	"icon": "images/icon.png",
+	"extensionKind": [
+		"ui"
+	]
 }
