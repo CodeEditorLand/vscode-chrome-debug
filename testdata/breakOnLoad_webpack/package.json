@@ -1,10 +1,8 @@
 {
-	"scripts": {
-		"Document": "Document 'Source/**/*.ts'",
-		"build": "webpack",
-		"prepublishOnly": "Build 'Source/**/*.ts'"
-	},
-	"devDependencies": {
-		"@playform/build": "0.0.7"
-	}
+    "scripts": {
+        "build": "webpack"
+    },
+    "devDependencies": {
+        "webpack": "^3.8.1"
+    }
 }
