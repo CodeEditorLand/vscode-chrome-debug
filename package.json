@@ -1,18 +1,9 @@
 {
-	"name": "debugger-for-chrome",
-	"displayName": "[Deprecated] Debugger for Chrome",
-	"description": "%extension.description%",
-	"main": "./out/src/extension",
-	"scripts": {
-		"allIntTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json \"./out/test/int/**/*.test.js\"",
-		"build": "gulp build",
-		"frameworkTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json ./out/test/int/framework/*.test.js",
-		"intTest": "mocha --exit --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
-		"major": "npm version major -m '%s'",
-		"minor": "npm version minor -m '%s'",
-		"patch": "npm version patch -m '%s'",
-		"start": "node out/src/chromeDebug.js --server=4712"
-	},
+	"activationEvents": [
+		"onDebugResolve:legacy-chrome",
+		"onCommand:extension.chrome-debug.toggleSkippingFile",
+		"onCommand:extension.chrome-debug.toggleSmartStep"
+	],
 	"contributes": {
 		"breakpoints": [
 			{
@@ -369,12 +360,8 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"onDebugResolve:legacy-chrome",
-		"onCommand:extension.chrome-debug.toggleSkippingFile",
-		"onCommand:extension.chrome-debug.toggleSmartStep"
-	],
 	"dependencies": {},
+	"description": "%extension.description%",
 	"devDependencies": {
 		"@types/chai": "^4.1.7",
 		"@types/chai-string": "^1.4.1",
@@ -402,8 +389,21 @@
 		"ts-loader": "^1.0.0",
 		"typemoq": "^2.1.0"
 	},
-	"icon": "images/icon.png",
+	"displayName": "[Deprecated] Debugger for Chrome",
 	"extensionKind": [
 		"ui"
-	]
+	],
+	"icon": "images/icon.png",
+	"main": "./out/src/extension",
+	"name": "debugger-for-chrome",
+	"scripts": {
+		"allIntTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json \"./out/test/int/**/*.test.js\"",
+		"build": "gulp build",
+		"frameworkTest": "mocha --require source-map-support/register --exit --timeout 20000 -s 3500 -u tdd --colors --reporter mocha-multi-reporters --reporter-options configFile=test/int/testConfig.json ./out/test/int/framework/*.test.js",
+		"intTest": "mocha --exit --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
+		"major": "npm version major -m '%s'",
+		"minor": "npm version minor -m '%s'",
+		"patch": "npm version patch -m '%s'",
+		"start": "node out/src/chromeDebug.js --server=4712"
+	}
 }
