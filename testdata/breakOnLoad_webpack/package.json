@@ -1,6 +1,8 @@
 {
-	"devDependencies": {},
-	"scripts": {
-		"build": "webpack"
-	}
+    "scripts": {
+        "build": "webpack"
+    },
+    "devDependencies": {
+        "webpack": "^3.8.1"
+    }
 }
