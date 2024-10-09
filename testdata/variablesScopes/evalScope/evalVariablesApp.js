@@ -1,6 +1,6 @@
-console.log('TestCode: START');
+console.log("TestCode: START");
 
-console.log('TestCode: BEFORE-ADDING-VARIABLES');
+console.log("TestCode: BEFORE-ADDING-VARIABLES");
 
 // Try to create a variable of each important type, to verify that we can see their contents properly
 
@@ -78,4 +78,4 @@ console.log('TestCode: BEFORE-VERIFYING-VARIABLES');
 debugger; // Pause here to verify that we can see the values and types of all the variables
 `);
 
-console.log('TestCode: END');
+console.log("TestCode: END");
