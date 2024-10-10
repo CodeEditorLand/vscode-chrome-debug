@@ -1,9 +1,4 @@
 {
-	"name": "my-app",
-	"scripts": {
-		"build": "node scripts/build.js",
-		"start": "node scripts/start.js"
-	},
 	"babel": {
 		"presets": [
 			"react-app"
@@ -15,6 +10,25 @@
 		"not ie <= 11",
 		"not op_mini all"
 	],
+	"dependencies": {
+		"bfj": "9.0.2",
+		"css-loader": "7.1.2",
+		"dotenv": "16.4.5",
+		"dotenv-expand": "11.0.6",
+		"file-loader": "6.2.0",
+		"fs-extra": "11.2.0",
+		"identity-obj-proxy": "3.0.0",
+		"mini-css-extract-plugin": "2.9.1",
+		"postcss-flexbugs-fixes": "5.0.2",
+		"postcss-loader": "8.1.1",
+		"postcss-preset-env": "10.0.6",
+		"postcss-safe-parser": "7.0.1",
+		"resolve": "1.22.8",
+		"sass-loader": "16.0.2",
+		"style-loader": "4.0.0",
+		"url-loader": "4.1.1"
+	},
+	"devDependencies": {},
 	"jest": {
 		"collectCoverageFrom": [
 			"src/**/*.{js,jsx,ts,tsx}",
@@ -60,23 +74,9 @@
 			"C:\\development\\react_test_project\\my-app\\node_modules\\jest-watch-typeahead\\testname.js"
 		]
 	},
-	"dependencies": {
-		"bfj": "9.0.2",
-		"css-loader": "7.1.2",
-		"dotenv": "16.4.5",
-		"dotenv-expand": "11.0.6",
-		"file-loader": "6.2.0",
-		"fs-extra": "11.2.0",
-		"identity-obj-proxy": "3.0.0",
-		"mini-css-extract-plugin": "2.9.1",
-		"postcss-flexbugs-fixes": "5.0.2",
-		"postcss-loader": "8.1.1",
-		"postcss-preset-env": "10.0.6",
-		"postcss-safe-parser": "7.0.1",
-		"resolve": "1.22.8",
-		"sass-loader": "16.0.2",
-		"style-loader": "4.0.0",
-		"url-loader": "4.1.1"
-	},
-	"devDependencies": {}
+	"name": "my-app",
+	"scripts": {
+		"build": "node scripts/build.js",
+		"start": "node scripts/start.js"
+	}
 }
