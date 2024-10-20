@@ -11,7 +11,7 @@
 		"not op_mini all"
 	],
 	"dependencies": {
-		"bfj": "9.0.2",
+		"bfj": "9.1.1",
 		"css-loader": "7.1.2",
 		"dotenv": "16.4.5",
 		"dotenv-expand": "11.0.6",
