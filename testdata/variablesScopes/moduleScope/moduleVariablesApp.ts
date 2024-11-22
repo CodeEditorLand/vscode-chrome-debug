@@ -39,6 +39,7 @@ export const fn = () => {
 };
 export let fn2 = function (param) {
 	let zzz = 333;
+
 	return param + zzz;
 };
 export let qqq;

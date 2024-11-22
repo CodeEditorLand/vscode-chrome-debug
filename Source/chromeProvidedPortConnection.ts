@@ -20,6 +20,7 @@ const localize = nls.loadMessageBundle();
  */
 export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnection {
 	private userDataDir = undefined;
+
 	setUserDataDir(userDataDir: string) {
 		this.userDataDir = userDataDir;
 	}
@@ -41,6 +42,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 			(this.userDataDir === undefined || this.userDataDir === "")
 		)
 			return errors.chromeProvidedPortWithoutUserDataDir();
+
 		return utils
 			.retryAsync(
 				async () => {
@@ -51,6 +53,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 									this.userDataDir,
 								)
 							: port;
+
 					return launchedPort;
 				},
 				timeout,
@@ -78,16 +81,20 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 		userDataDir: string,
 	): Promise<number> {
 		logger.verbose("Looking for DevToolsActivePort file...");
+
 		const launchedPort = await chromeUtils.getLaunchedPort(userDataDir);
 		logger.verbose("Got the port, checking if its ready...");
+
 		const portInUse = await chromeUtils.isPortInUse(
 			launchedPort,
 			host,
 			100,
 		);
+
 		if (!portInUse) {
 			// bail, the port isn't open
 			logger.verbose("Port not open yet...");
+
 			return errors.couldNotConnectToPort(host, launchedPort);
 		}
 		return launchedPort;

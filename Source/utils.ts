@@ -6,6 +6,7 @@ import * as path from "path";
 import { chromeConnection, utils as coreUtils } from "vscode-chrome-debug-core";
 
 const WIN_APPDATA = process.env.LOCALAPPDATA || "/";
+
 const DEFAULT_CHROME_PATH = {
 	LINUX: "/usr/bin/google-chrome",
 	OSX: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
@@ -19,6 +20,7 @@ const DEFAULT_CHROME_PATH = {
 
 export function getBrowserPath(): string {
 	const platform = coreUtils.getPlatform();
+
 	if (platform === coreUtils.Platform.OSX) {
 		return coreUtils.existsSync(DEFAULT_CHROME_PATH.OSX)
 			? DEFAULT_CHROME_PATH.OSX

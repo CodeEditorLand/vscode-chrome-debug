@@ -64,6 +64,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		args: IExtendedInitializeRequestArguments,
 	): VSDebugProtocolCapabilities {
 		this._overlayHelper = new utils.DebounceHelper(/*timeoutMs=*/ 200);
+
 		const capabilities: VSDebugProtocolCapabilities = super.initialize(
 			args,
 		);
@@ -98,6 +99,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 		return super.launch(args, telemetryPropertyCollector).then(async () => {
 			let runtimeExecutable: string;
+
 			if (args.shouldLaunchChromeUnelevated !== undefined) {
 				telemetryPropertyCollector.addTelemetryProperty(
 					"shouldLaunchChromeUnelevated",
@@ -112,6 +114,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			}
 			if (args.runtimeExecutable) {
 				const re = findExecutable(args.runtimeExecutable);
+
 				if (!re) {
 					return errors.getNotExistErrorResponse(
 						"runtimeExecutable",
@@ -123,6 +126,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			}
 
 			runtimeExecutable = runtimeExecutable || utils.getBrowserPath();
+
 			if (!runtimeExecutable) {
 				return coreUtils.errP(
 					localize(
@@ -135,9 +139,12 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			// Start with remote debugging enabled
 			// allow port = 0
 			let port = args.port !== undefined ? args.port : 9222;
+
 			const chromeArgs: string[] = [];
+
 			const chromeEnv: coreUtils.IStringDictionary<string> =
 				args.env || null;
+
 			const chromeWorkingDir: string = args.cwd || null;
 
 			if (!args.noDebug) {
@@ -148,6 +155,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			chromeArgs.push(
 				...["--no-first-run", "--no-default-browser-check"],
 			);
+
 			if (args.runtimeArgs) {
 				telemetryPropertyCollector.addTelemetryProperty(
 					"numberOfChromeCmdLineSwitchesBeingUsed",
@@ -179,6 +187,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			}
 
 			let launchUrl: string;
+
 			if (args.file) {
 				launchUrl = coreUtils.pathToFileURL(args.file);
 			} else if (args.url) {
@@ -204,6 +213,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				!!args.runtimeExecutable,
 				args.shouldLaunchChromeUnelevated,
 			);
+
 			if (this._chromeProc) {
 				this._chromeProc.on("error", (err) => {
 					const errMsg = "Chrome error: " + err;
@@ -243,6 +253,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	protected onFrameNavigated(params: Crdp.Page.FrameNavigatedEvent): void {
 		if (this._userRequestedUrl) {
 			const url = params.frame.url;
+
 			const requestedUrlNoAnchor = this._userRequestedUrl.split("#")[0]; // Frame navigated url doesn't include the anchor
 			if (
 				url === requestedUrlNoAnchor ||
@@ -364,6 +375,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						const configDisableNetworkCache = (<ICommonRequestArgs>(
 							this._launchAttachArgs
 						)).disableNetworkCache;
+
 						const cacheDisabled =
 							typeof configDisableNetworkCache === "boolean"
 								? configDisableNetworkCache
@@ -388,6 +400,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 							};
 
 							const parts = (response.product || "").split("/");
+
 							if (parts.length === 2) {
 								// Currently response.product looks like "Chrome/65.0.3325.162" so we split the project and the actual version number
 								properties["Versions.Target.Project"] =
@@ -405,11 +418,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 							logger.log(
 								"Getting userAgent failed: " + err.message,
 							);
+
 							const properties = {
 								"Versions.Target.NoUserAgentReason":
 									"Error while retriving target user agent",
 							} as telemetry.IExecutionResultTelemetryProperties;
 							coreUtils.fillErrorDetails(properties, err);
+
 							return properties;
 						},
 					);
@@ -447,6 +462,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 						const browserVersion = (
 							await this._chromeConnection.version
 						).browser;
+
 						if (!browserVersion.isAtLeastVersion(0, 1)) {
 							// If this is true it means it's unknown version
 							logger.log(
@@ -455,6 +471,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 							// If the original way failed, we try to use versionInformationPromise to get this information
 							const versionInformation =
 								await versionInformationPromise;
+
 							const alternativeBrowserVersion = Version.parse(
 								versionInformation["Versions.Target.Version"],
 							);
@@ -523,6 +540,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 					)
 				: (<any>this.chrome).Page.configureOverlay({}).catch(() => {});
 		});
+
 		super.onResumed();
 	}
 
@@ -554,6 +572,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 	private async killChromeOnWindows(chromePID: number): Promise<void> {
 		let taskkillCmd = `taskkill /PID ${chromePID}`;
 		logger.log(`Killing Chrome process by pid: ${taskkillCmd}`);
+
 		try {
 			execSync(taskkillCmd);
 		} catch (e) {
@@ -564,6 +583,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			// Check to see if the process is still running, with CSV output format
 			let tasklistCmd = `tasklist /FI "PID eq ${chromePID}" /FO CSV`;
 			logger.log(`Looking up process by pid: ${tasklistCmd}`);
+
 			let tasklistOutput = execSync(tasklistCmd).toString();
 
 			// If the process is found, tasklist will output CSV with one of the values being the PID. Exit code will be 0.
@@ -573,6 +593,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				logger.log(
 					`Chrome process with pid ${chromePID} is not running`,
 				);
+
 				return;
 			}
 
@@ -590,6 +611,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		logger.log(
 			`Killing Chrome process timed out. Killing again using force: ${taskkillForceCmd}`,
 		);
+
 		try {
 			execSync(taskkillForceCmd);
 		} catch (e) {}
@@ -618,7 +640,9 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
            }
          */
 		this.events.emitStepStarted("LaunchTarget.LaunchExe");
+
 		const platform = coreUtils.getPlatform();
+
 		if (platform === coreUtils.Platform.Windows && shouldLaunchUnelevated) {
 			let chromePid: number;
 
@@ -646,6 +670,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 				execArgv: [],
 				silent: true,
 			};
+
 			if (env) {
 				options["env"] = this.getFullEnv(env);
 			}
@@ -681,10 +706,12 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			return chromeProc;
 		} else {
 			logger.log(`spawn('${chromePath}', ${JSON.stringify(chromeArgs)})`);
+
 			const options = {
 				detached: true,
 				stdio: ["ignore" as const],
 			};
+
 			if (env) {
 				options["env"] = this.getFullEnv(env);
 			}
@@ -708,6 +735,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 			os.tmpdir(),
 			"launchedUnelevatedChromeProcess.id",
 		);
+
 		if (fs.existsSync(semaphoreFile)) {
 			// remove the previous semaphoreFile if it exists.
 			fs.unlinkSync(semaphoreFile);
@@ -733,6 +761,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
 		if (pidStr) {
 			logger.log(`Parsed output file and got Chrome PID ${pidStr}`);
+
 			return parseInt(pidStr, 10);
 		}
 
@@ -750,6 +779,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		Object.keys(env)
 			.filter((k) => env[k] === null)
 			.forEach((key) => delete env[key]);
+
 		return env;
 	}
 
@@ -780,6 +810,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		args: ISetExpressionArgs,
 	): Promise<ISetExpressionResponseBody> {
 		const reconstructedExpression = `${args.expression} = ${args.value}`;
+
 		const evaluateEventArgs: DebugProtocol.EvaluateArguments = {
 			expression: reconstructedExpression,
 			frameId: args.frameId,
@@ -788,6 +819,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 		};
 
 		const evaluateResult = await this.evaluate(evaluateEventArgs);
+
 		return {
 			value: evaluateResult.result,
 		};
@@ -827,12 +859,14 @@ export function resolveWebRootPattern(
 	warnOnMissing: boolean,
 ): ISourceMapPathOverrides {
 	const resolvedOverrides: ISourceMapPathOverrides = {};
+
 	for (let pattern in sourceMapPathOverrides) {
 		const replacePattern = replaceWebRootInSourceMapPathOverridesEntry(
 			webRoot,
 			pattern,
 			warnOnMissing,
 		);
+
 		const replacePatternValue = replaceWebRootInSourceMapPathOverridesEntry(
 			webRoot,
 			sourceMapPathOverrides[pattern],
@@ -851,6 +885,7 @@ function replaceWebRootInSourceMapPathOverridesEntry(
 	warnOnMissing: boolean,
 ): string {
 	const webRootIndex = entry.indexOf("${webRoot}");
+
 	if (webRootIndex === 0) {
 		if (webRoot) {
 			return entry.replace("${webRoot}", webRoot);
@@ -875,10 +910,13 @@ function getChromeSpawnHelperPath(): string {
 function findExecutable(program: string): string | undefined {
 	if (process.platform === "win32" && !path.extname(program)) {
 		const PATHEXT = process.env["PATHEXT"];
+
 		if (PATHEXT) {
 			const executableExtensions = PATHEXT.split(";");
+
 			for (const extension of executableExtensions) {
 				const programPath = program + extension;
+
 				if (fs.existsSync(programPath)) {
 					return programPath;
 				}
@@ -897,7 +935,9 @@ async function findNewlyLaunchedChromeProcess(
 	semaphoreFile: string,
 ): Promise<string> {
 	const regexPattern = /processid\s+=\s+(\d+)\s*;/i;
+
 	let lastAccessFileContent: string;
+
 	for (let i = 0; i < 25; i++) {
 		if (fs.existsSync(semaphoreFile)) {
 			lastAccessFileContent = fs
@@ -911,12 +951,14 @@ async function findNewlyLaunchedChromeProcess(
 			const matchedLines = (lines || []).filter((line) =>
 				line.match(regexPattern),
 			);
+
 			if (matchedLines.length > 1) {
 				throw new Error(`Unexpected semaphore file format ${lines}`);
 			}
 
 			if (matchedLines.length === 1) {
 				const match = matchedLines[0].match(regexPattern);
+
 				return match[1];
 			}
 			// else == 0, wait for 200 ms delay and try again.
@@ -927,6 +969,7 @@ async function findNewlyLaunchedChromeProcess(
 	}
 
 	const error = new Error(`Cannot acquire Chrome process id`);
+
 	let telemetryProperties: any = {
 		semaphoreFileContent: lastAccessFileContent,
 	};

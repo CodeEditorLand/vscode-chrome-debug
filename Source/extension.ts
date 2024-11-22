@@ -61,6 +61,7 @@ export class ChromeConfigurationProvider
 				);
 
 			let targets;
+
 			try {
 				targets = await discovery.getAllTargets(
 					config.address || "127.0.0.1",
@@ -76,6 +77,7 @@ export class ChromeConfigurationProvider
 
 			if (targets && targets.length > 1) {
 				const selectedTarget = await pickTarget(targets);
+
 				if (!selectedTarget) {
 					// Quickpick canceled, bail
 					return null;
@@ -86,17 +88,20 @@ export class ChromeConfigurationProvider
 		}
 
 		resolveRemoteUris(folder, config);
+
 		return config;
 	}
 }
 
 // Must match the strings in -core's remoteMapper.ts
 const remoteUriScheme = "vscode-remote";
+
 const remotePathComponent = "__vscode-remote-uri__";
 
 const isWindows = process.platform === "win32";
 function getFsPath(uri: vscode.Uri): string {
 	const fsPath = uri.fsPath;
+
 	return isWindows && !fsPath.match(/^[a-zA-Z]:/)
 		? fsPath.replace(/\\/g, "/") // Hack - undo the slash normalization that URI does when windows is the current platform
 		: fsPath;
@@ -104,8 +109,11 @@ function getFsPath(uri: vscode.Uri): string {
 
 function mapRemoteClientUriToInternalPath(remoteUri: vscode.Uri): string {
 	const uriPath = getFsPath(remoteUri);
+
 	const driveLetterMatch = uriPath.match(/^[A-Za-z]:/);
+
 	let internalPath: string;
+
 	if (!!driveLetterMatch) {
 		internalPath = path.win32.join(
 			driveLetterMatch[0],
@@ -187,11 +195,13 @@ async function pickTarget(
 	);
 
 	const placeHolder = localize("chrome.targets.placeholder", "Select a tab");
+
 	const selected = await vscode.window.showQuickPick(items, {
 		placeHolder,
 		matchOnDescription: true,
 		matchOnDetail: true,
 	});
+
 	return selected;
 }
 
