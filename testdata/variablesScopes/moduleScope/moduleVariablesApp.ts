@@ -13,38 +13,53 @@ export const manyPropsObj = { prop2: "abc", prop1: "def" };
 for (let i = 0; i <= 100; i++) manyPropsObj[i] = 2 * i + 1;
 
 export let r = /^asdf.*$/g;
+
 export let longStr = `this is a
 string with
 newlines`;
+
 export let element = document.body;
+
 export const buffer = new ArrayBuffer(8);
+
 export let buffView = new Int32Array(buffer);
 buffView[0] = 234;
+
 export let s = Symbol("hi");
+
 export let e = new Error("hi");
 
 export let m = new Map();
 m.set("a", 1);
 
 export let b = document.body;
+
 export const nan = NaN;
+
 export let inf = 1 / 0;
+
 export let infStr = "Infinity";
 
 export let bool = true;
+
 export const fn = () => {
 	// Some fn
 	let xyzz = 321;
 	fn2(xyzz);
 };
+
 export let fn2 = function (param) {
 	let zzz = 333;
 
 	return param + zzz;
 };
+
 export let qqq;
+
 export let str = "hello";
+
 export let xyz = 1;
+
 export let obj = {
 	a: 2,
 	get thing() {
