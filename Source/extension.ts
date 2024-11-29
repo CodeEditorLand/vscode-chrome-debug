@@ -18,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 			toggleSkippingFile,
 		),
 	);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
 			"extension.chrome-debug.toggleSmartStep",
@@ -149,6 +150,7 @@ function resolveRemoteUris(
 ): void {
 	if (folder && folder.uri.scheme === remoteUriScheme) {
 		const internalPath = mapRemoteClientUriToInternalPath(folder.uri);
+
 		rewriteWorkspaceRoot(config, internalPath);
 		(<any>config).remoteAuthority = folder.uri.authority;
 	}
@@ -157,6 +159,7 @@ function resolveRemoteUris(
 function toggleSkippingFile(aPath: string): void {
 	if (!aPath) {
 		const activeEditor = vscode.window.activeTextEditor;
+
 		aPath = activeEditor && activeEditor.document.fileName;
 	}
 
@@ -165,6 +168,7 @@ function toggleSkippingFile(aPath: string): void {
 			typeof aPath === "string"
 				? { path: aPath }
 				: { sourceReference: aPath };
+
 		vscode.debug.activeDebugSession.customRequest(
 			"toggleSkipFileStatus",
 			args,

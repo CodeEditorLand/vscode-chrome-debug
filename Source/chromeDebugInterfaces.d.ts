@@ -7,9 +7,13 @@ import { DebugProtocol } from "vscode-debugprotocol";
 
 export interface ICommonRequestArgs extends Core.ICommonRequestArgs {
 	webRoot?: string;
+
 	disableNetworkCache?: boolean;
+
 	targetTypes?: string[];
+
 	targetFilter?: Core.chromeConnection.ITargetFilter;
+
 	urlFilter?: string;
 }
 
@@ -17,18 +21,29 @@ export interface ILaunchRequestArgs
 	extends Core.ILaunchRequestArgs,
 		ICommonRequestArgs {
 	runtimeArgs?: string[];
+
 	runtimeExecutable?: string;
+
 	env?: { [key: string]: string };
+
 	cwd?: string;
+
 	file?: string;
+
 	url?: string;
+
 	stopOnEntry?: boolean;
+
 	address?: string;
+
 	port?: number;
+
 	userDataDir?: string | boolean;
 
 	breakOnLoad?: boolean;
+
 	_clientOverlayPausedMessage?: string;
+
 	shouldLaunchChromeUnelevated?: boolean;
 }
 
@@ -38,10 +53,13 @@ export interface IAttachRequestArgs
 
 export interface ISetExpressionArgs {
 	expression: string;
+
 	value: string;
+
 	frameId: number;
 
 	format?: DebugProtocol.ValueFormat;
+
 	timeout?: number;
 }
 

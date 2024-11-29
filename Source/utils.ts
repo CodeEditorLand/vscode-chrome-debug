@@ -54,6 +54,7 @@ export class DebounceHelper {
 		if (!this.waitToken) {
 			this.waitToken = setTimeout(() => {
 				this.waitToken = null;
+
 				fn();
 			}, this.timeoutMs);
 		}
@@ -65,6 +66,7 @@ export class DebounceHelper {
 	public doAndCancel(fn: () => any): void {
 		if (this.waitToken) {
 			clearTimeout(this.waitToken);
+
 			this.waitToken = null;
 		}
 

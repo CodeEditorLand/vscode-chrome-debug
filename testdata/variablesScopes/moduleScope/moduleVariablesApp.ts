@@ -1,4 +1,5 @@
 console.log("TestCode: START");
+
 console.log("TestCode: BEFORE-ADDING-VARIABLES");
 
 // Try to create a variable of each important type, to verify that we can see their contents properly
@@ -45,6 +46,7 @@ export let bool = true;
 export const fn = () => {
 	// Some fn
 	let xyzz = 321;
+
 	fn2(xyzz);
 };
 

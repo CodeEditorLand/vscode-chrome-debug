@@ -83,6 +83,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 		logger.verbose("Looking for DevToolsActivePort file...");
 
 		const launchedPort = await chromeUtils.getLaunchedPort(userDataDir);
+
 		logger.verbose("Got the port, checking if its ready...");
 
 		const portInUse = await chromeUtils.isPortInUse(
@@ -97,6 +98,7 @@ export class ChromeProvidedPortConnection extends chromeConnection.ChromeConnect
 
 			return errors.couldNotConnectToPort(host, launchedPort);
 		}
+
 		return launchedPort;
 	}
 }
