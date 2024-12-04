@@ -13,7 +13,7 @@
 	"dependencies": {
 		"bfj": "9.1.1",
 		"css-loader": "7.1.2",
-		"dotenv": "16.4.6",
+		"dotenv": "16.4.7",
 		"dotenv-expand": "12.0.1",
 		"file-loader": "6.2.0",
 		"fs-extra": "11.2.0",
@@ -24,7 +24,7 @@
 		"postcss-preset-env": "10.1.1",
 		"postcss-safe-parser": "7.0.1",
 		"resolve": "1.22.8",
-		"sass-loader": "16.0.3",
+		"sass-loader": "16.0.4",
 		"style-loader": "4.0.0",
 		"url-loader": "4.1.1"
 	},
