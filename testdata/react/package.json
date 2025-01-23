@@ -61,7 +61,7 @@
 		]
 	},
 	"dependencies": {
-		"bfj": "9.1.1",
+		"bfj": "9.1.2",
 		"css-loader": "7.1.2",
 		"dotenv": "16.4.7",
 		"dotenv-expand": "12.0.1",
