@@ -380,7 +380,7 @@
 		"@types/chai-string": "1.4.5",
 		"@types/lodash": "4.17.14",
 		"@types/mockery": "1.4.33",
-		"@types/node": "22.10.9",
+		"@types/node": "22.10.10",
 		"@types/puppeteer": "7.0.4",
 		"@types/source-map": "0.5.7",
 		"@types/tmp": "0.2.6",
